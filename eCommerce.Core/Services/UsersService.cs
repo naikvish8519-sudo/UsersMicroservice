@@ -46,4 +46,26 @@ internal class UsersService : IUsersService
     //return new AuthenticationResponse(registeredUser.UserID, registeredUser.Email, registeredUser.PersonName, registeredUser.Gender, "token", Success: true);
     return _mapper.Map<AuthenticationResponse>(registeredUser) with { Success = true, Token = "token" };
   }
+
+
+    public async Task<UserInfo?> GetUserByIdAsync(Guid userId)
+    {
+        if (userId == Guid.Empty)
+        {
+            return null;
+        }
+
+        ApplicationUser? user = await _usersRepository.GetUserById(userId);
+
+        if (user == null)
+        {
+            return null;
+        }
+
+        return _mapper.Map<UserInfo>(user);
+    }
+
+
+
+
 }

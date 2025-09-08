@@ -21,4 +21,12 @@ public interface IUsersService
   /// <param name="registerRequest"></param>
   /// <returns></returns>
   Task<AuthenticationResponse?> Register(RegisterRequest registerRequest);
+
+
+    /// <summary>
+    /// Method to get user details by UserID and returns a UserResponse object
+    /// </summary>
+    /// <param name="userId">The unique identifier of the user</param>
+    /// <returns>UserResponse if found; otherwise, null</returns>
+    Task<UserInfo?> GetUserByIdAsync(Guid userId);
 }

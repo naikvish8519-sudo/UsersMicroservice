@@ -83,5 +83,14 @@ internal class UsersRepository : IUsersRepository
         return await _dbContext.Users
             .FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
     }
+
+
+    public async Task<ApplicationUser?> GetUserById(Guid userId)
+    {
+        return await _dbContext.Users.FirstOrDefaultAsync(u => u.UserID == userId);
+    }
+
+
+
 }
 

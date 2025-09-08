@@ -57,5 +57,24 @@ namespace eCommerce.API.Controllers
 
       return Ok(authenticationResponse);
     }
-  }
+
+        // GET: api/auth/{userId}
+        [HttpGet("{userId:guid}")]
+        public async Task<IActionResult> GetUserById(Guid userId)
+        {
+            if (userId == Guid.Empty)
+            {
+                return BadRequest("Invalid userId.");
+            }
+
+            var user = await _usersService.GetUserByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound($"User with ID {userId} not found.");
+            }
+
+            return Ok(user);
+        }
+    }
 }

@@ -37,15 +37,25 @@ namespace eCommerce.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
-    {
-        // Build a temporary service provider to get IConfiguration
-        var serviceProvider = services.BuildServiceProvider();
-        var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+    //public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+    //{
+    //    // Build a temporary service provider to get IConfiguration
+    //    var serviceProvider = services.BuildServiceProvider();
+    //    var configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
-        // Now use configuration as before
+    //    // Now use configuration as before
+    //    services.AddDbContext<EfDbContext>(options =>
+    //        options.UseSqlServer(configuration.GetConnectionString("SqlServerConnection")));
+
+    //    services.AddTransient<IUsersRepository, UsersRepository>();
+
+    //    return services;
+    //}
+
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    {
         services.AddDbContext<EfDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("SqlServerConnection")));
+            options.UseSqlServer(configuration.GetConnectionString("SqlServer")));
 
         services.AddTransient<IUsersRepository, UsersRepository>();
 
