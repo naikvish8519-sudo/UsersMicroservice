@@ -4,8 +4,8 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
-EXPOSE 8090
-EXPOSE 8091
+EXPOSE 8080
+EXPOSE 8081
 
 # Build image
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
@@ -37,10 +37,8 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-# ✅ Force ASP.NET Core to listen on 8090 inside the container
-ENV ASPNETCORE_URLS="http://+:8090"
 
-# ✅ Inject SQL connection string (matches appsettings.json key: SqlServerConnection)
-ENV ConnectionStrings__SqlServerConnection="Server=tcp:host.docker.internal,1433;Database=Microservices;User Id=dockeruser;Password=StrongPass123!;Encrypt=True;TrustServerCertificate=True;"
+ENV ASPNETCORE_URLS="http://+:8080"
+
 
 ENTRYPOINT ["dotnet", "eCommerce.API.dll"]

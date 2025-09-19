@@ -29,13 +29,24 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //Add cors services
+//builder.Services.AddCors(options =>
+//{
+//  options.AddDefaultPolicy(builder => {
+//    builder.WithOrigins("http://localhost:4200","http://localhost:3000/")
+//    .AllowAnyMethod()
+//    .AllowAnyHeader();
+//  });
+//});
+
 builder.Services.AddCors(options =>
 {
-  options.AddDefaultPolicy(builder => {
-    builder.WithOrigins("http://localhost:4200")
-    .AllowAnyMethod()
-    .AllowAnyHeader();
-  });
+    options.AddPolicy("AllowLocalhost",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000", "http://localhost:4200") // React & Angular
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
 });
 
 //Build the web application
@@ -45,9 +56,15 @@ app.UseExceptionHandlingMiddleware();
 
 //Routing
 app.UseRouting();
-app.UseSwagger(); //Adds endpoint that can serve the swagger.json
-app.UseSwaggerUI(); //Adds swagger UI (interactive page to explore and test API endpoints)
-app.UseCors();
+//app.UseSwagger(); //Adds endpoint that can serve the swagger.json
+//app.UseSwaggerUI(); //Adds swagger UI (interactive page to explore and test API endpoints)
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "eCommerce API v1");
+    c.RoutePrefix = string.Empty; // Swagger at root: http://localhost:6000/
+});
+app.UseCors("AllowLocalhost");
 
 
 //Auth
