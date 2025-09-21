@@ -1,4 +1,4 @@
-using eCommerce.Infrastructure;
+﻿using eCommerce.Infrastructure;
 using eCommerce.Core;
 using eCommerce.API.Middlewares;
 using System.Text.Json.Serialization;
@@ -34,7 +34,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowLocalhost",
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000", "http://localhost:4200") 
+            policy.WithOrigins("http://localhost:3000", "http://localhost:4200","https://react-pizza-gsdtecavejezewfr.canadacentral-01.azurewebsites.net") 
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
@@ -48,12 +48,22 @@ app.UseExceptionHandlingMiddleware();
 //Routing
 app.UseRouting();
 
-app.UseSwagger();
-app.UseSwaggerUI(c =>
+//app.UseSwagger();
+//app.UseSwaggerUI(c =>
+//{
+//    c.SwaggerEndpoint("/swagger/v1/swagger.json", "eCommerce API v1");
+//    c.RoutePrefix = string.Empty; 
+//});
+
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction()) // 👈 allow in Azure too
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "eCommerce API v1");
-    c.RoutePrefix = string.Empty; 
-});
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "UsersMicroservice API v1");
+        c.RoutePrefix = string.Empty; // 👈 makes swagger available at root "/"
+    });
+}
 app.UseCors("AllowLocalhost");
 
 

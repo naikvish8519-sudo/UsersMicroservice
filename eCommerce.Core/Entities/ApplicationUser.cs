@@ -1,4 +1,5 @@
-﻿namespace eCommerce.Core.Entities;
+﻿//-----Entity---
+namespace eCommerce.Core.Entities;
 
 
 using System.ComponentModel.DataAnnotations;
